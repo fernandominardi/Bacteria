@@ -1,0 +1,107 @@
+GLOSARIO [explicaciones globales]
+
+codigo de jugada
+
+	en el programa utilizamos un método para transmitir las jugadas en un solo int
+	para eso inventamos una nomenclatura de dicho int
+
+	el primer digito indica la jugada
+
+	los siguientes pares de dígitos representan respectivamente
+
+	fila inicial
+	columna inicial
+	fila final
+	columna final
+	
+	en el siguientes define:
+	a = jugada
+	b = fila inicial
+	c = columna inicial
+	d = fila final
+	e = columna final
+	
+	#define crear_int_jugada(a,b,c,d,e) (a)*100000000 + (b)*1000000 + (c)*10000 + (d)*100 + (e)
+	sirve para crear el int con la nomenclatura antes descrita
+	
+	los siguientes defines son para descomponer cada codigo de jugada en sus componentes utiles
+	#define get_jugada(a)       (a)/100000000
+	#define get_fila_inicial(a) ((a)%100000000)/1000000
+	#define get_col_inicial(a)  ((a)%1000000)/10000
+	#define get_fila_final(a)   ((a)%10000)/100
+	#define get_col_final(a)    (a)%100
+	
+ESTRUCTURA DEL ARBOL DE DESICIONES
+
+	cada vector de punteros a los hijos de un nodo finaliza con un puntero a null en su ultimo elemento para 
+	facilitar el recorrido posterior del arbol
+
+VARIABLES DE INFORMACION (AI)
+vector de propagacion
+	es un vector de 18 elementos, que guarda el codigo de jugada de cada propagacion posible para una coordenada especifica
+	o NULL, en caso de que dicha propagacion no pueda ser realizada
+	la lista de indices es la siguiente (se usan puntos cardinales para mejor entendimiento)
+	
+	propagaciones adyacentes (6) comienza en el norte y va en sentido horario
+	propagaciones no adyacentes (12) comienza en el norte y va en sentido horario
+
+vector general de propagaciones
+	vector de dimension variable que contiene los codigos de jugadas de cada propagacion
+	posible en un tablero determinado, para el jugador del turno analizado
+	
+vector de jugadas
+	contiene todas las jugadas posibles del tablero a analizar
+
+METODOS DE RECORRIDO
+
+
+caso columna PAR
+
+i+1-2*(columna%2) -> apunta a la posicion bajo la posicion actual
+
+caso columna IMPAR
+
+i+1-2*(columna%2) -> apunta a la posicion sobre la posicion actual
+
+recorrido de vecinos
+	** ver funcion es_vecino **
+
+rrecorrido de vecinos a vecinos
+	** ver funcion es_vecino_al_vecino **
+
+DEFINICIONES DE MENU
+
+Cada menu es administrado por funciones individuales, es decir, cada menu es una función.
+Para poder navegar por los menues sin la necesidad de tener en memoria el menu anterior 
+se implementa en el main un switch dentro de un while con lo que se llama al menú 
+correspondiente según sea el valor de una variable llamada current_menu.
+En otras palabras cada función de menu devuelve el valor del siguiente menú a mostrar 
+modificando el valor de  current_menu.
+
+MOUSE
+
+show_mouse(NULL); si se dibuja algo en la pantalla mientras el puntero está visible, 
+podría ocurrir una interrupción de movimiento en medio de su operación de dibujo. 
+Si esto ocurre, el buffer del ratón y el código de cambio de banco SVGA se confundirán, 
+y dejarán 'rastros de ratón' por toda la pantalla. 
+Para evitar esto, debe asegurarse que oculta el puntero del ratón siempre que vaya a 
+dibujar la pantalla. (MANUAL DE REFERENCIA DE ALLEGRO) 
+
+DEFINICIONES VARIAS
+
+color de identifiacion de casilla
+	es el color generado para identificar una casilla, y poder rescatar sus coordenadas sabiendo el color de la misma
+	en la grilla de casillas
+	las casillas van enumeradas de la siguiente manera en un tablero standard
+	
+	1  2  3  4  5  6  7  8
+	9 10 11 12 13 14 15 16
+	...
+
+	formula: columna + fila*ancho_del_tablero
+
+	
+grilla de colores
+	se utiliza un bitmap que no se muestra en pantalla que tiene la forma de los botones o casillas 
+	o cualquier objeto con que el mouse pueda interactuar
+	
